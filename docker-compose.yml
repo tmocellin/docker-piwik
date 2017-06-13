@@ -1,0 +1,44 @@
+version: '2'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /apps/web/ssl:/etc/nginx/certs:ro
+  ssl-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: ssl-companion
+    volumes:
+      - /apps/web/ssl:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx-proxy
+    depends_on:
+      - nginx-proxy
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - MARIADB_ROOT_PASSWORD=YOURROOTPASSWORD
+    volumes:
+      - './data/mariadb/mariadb:/bitnami/mariadb'
+  piwik:
+    image: 'bitnami/piwik:latest'
+    ports:
+      - 80
+    depends_on:
+      - mariadb
+    volumes:
+      - './data/piwik/latest:/bitnami/piwik'
+      - './data/apache/latest:/bitnami/apache'
+      - './data/php/latest:/bitnami/php'
+    environment:
+      - VIRTUAL_HOST=analytics.yourdomain.fr
+      - LETSENCRYPT_HOST=analytics.yourdomain.fr
+      - LETSENCRYPT_EMAIL=mail@yourdomain.fr
+      - MARIADB_PASSWORD=YOURROOTPASSWORD
