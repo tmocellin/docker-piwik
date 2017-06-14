@@ -5,7 +5,7 @@ This repo contain a docker-compose configuration to use Piwik with NGINX and Let
 You can read the article about this [here](https://blog.dwastudio.fr/utiliser-piwik-avec-docker/)
 
 
-###How to use it
+### How to use it
 
 ```
 clone https://github.com/DWA-Studio/docker-piwik
