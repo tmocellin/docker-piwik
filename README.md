@@ -1,6 +1,6 @@
 # docker-piwik
 
-This repo contain a docker-compose configuration to use Piwik with NGINX and Let's Encrypt. Everythin runs on Docker. 
+This repo contain a docker-compose configuration to use Piwik with NGINX and Let's Encrypt. 
 
 You can read the article about this [here](https://blog.dwastudio.fr/utiliser-piwik-avec-docker/)
 
